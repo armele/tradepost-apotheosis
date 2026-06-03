@@ -26,7 +26,7 @@ Allows the Trade Post for MineColonies recycler building to handle Apotheosis sa
 [[dependencies.${mod_id}]]
     modId="mctradepost"
     type="required"
-    versionRange="[1.05.015,)"
+    versionRange="[1.05.021,)"
     ordering="AFTER"
     side="BOTH"
 

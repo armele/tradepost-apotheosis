@@ -17,6 +17,7 @@ import dev.shadowsoffire.apotheosis.affix.salvaging.SalvagingRecipe;
 import dev.shadowsoffire.apotheosis.affix.salvaging.SalvagingRecipe.OutputData;
 import dev.shadowsoffire.apotheosis.socket.SocketHelper;
 import dev.shadowsoffire.apotheosis.socket.gem.GemInstance;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.Holder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -66,6 +67,8 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
         {
             return null;
         }
+
+        outputs.add(createBaseItemOutput(input));
 
         return new RecyclingPlan.FinalOutputs(outputs);
     }
@@ -140,7 +143,7 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
     /**
      * Adds valid socketed gems to the output list, simulating the item-return portion of Apotheosis's Sigil of Withdrawal.
      * <p>
-     * The unsocketed base item is not emitted because Trade Post consumes the recycled item.
+     * The base item is emitted separately after Apotheosis recovery has claimed the input stack.
      *
      * @param input the item stack being recycled
      * @param outputs the mutable final-output list to receive recovered gem stacks
@@ -163,6 +166,51 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
         }
 
         return recoveredAny;
+    }
+
+    /**
+     * Creates a vanilla-equivalent copy of the input item, preserving only damage.
+     * Note that enchantments are not copied, as the base recycler logic will
+     * handle those based on the input item.
+     *
+     * @param input the claimed Apotheosis stack
+     * @return a fresh item stack with no Apotheosis-specific components
+     */
+    private static ItemStack createBaseItemOutput(final ItemStack input)
+    {
+
+        Item inputItem = input.getItem();
+
+        if (inputItem == null) return ItemStack.EMPTY;
+
+        final ItemStack baseItem = new ItemStack(inputItem, 1);
+        if (input.isDamageableItem())
+        {
+            baseItem.setDamageValue(input.getDamageValue());
+        }
+
+        // copyComponent(input, baseItem, DataComponents.ENCHANTMENTS);
+        
+        return baseItem;
+    }
+
+    /**
+     * Copies a single data component from one stack to another when present.
+     *
+     * @param source the stack to copy from
+     * @param target the stack to copy to
+     * @param component the component type to preserve
+     * @param <T> the component value type
+     */
+    protected static <T> void copyComponent(final ItemStack source, final ItemStack target, final DataComponentType<T> component)
+    {
+        if (component == null) return;
+
+        final T value = source.get(component);
+        if (value != null)
+        {
+            target.set(component, value);
+        }
     }
 
     /**
