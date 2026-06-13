@@ -184,10 +184,13 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
         if (inputItem == null) return ItemStack.EMPTY;
 
         final ItemStack baseItem = new ItemStack(inputItem, 1);
+        
         if (input.isDamageableItem())
         {
             baseItem.setDamageValue(input.getDamageValue());
         }
+
+        if (ItemStack.isSameItemSameComponents(input, baseItem)) return ItemStack.EMPTY;
 
         // copyComponent(input, baseItem, DataComponents.ENCHANTMENTS);
         
