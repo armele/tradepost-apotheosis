@@ -74,7 +74,11 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
     }
 
     /**
-     * Resolves the same recipe outputs that the Apotheosis Salvaging Table would produce for a single input stack.
+     * Resolves the same recipe outputs that the Apotheosis Salvaging Table would produce for every item in the input stack.
+     * <p>
+     * Apotheosis salvages one item at a time, even when the item handler receives a stackable input. The Trade Post recycler may
+     * extract a whole input slot into one processing stack, so roll the salvage outputs once per item to avoid consuming a stack while
+     * only returning one item's materials.
      * <p>
      * This returns final item stacks because Apotheosis recipes already define randomized output ranges and durability scaling.
      *
@@ -84,6 +88,28 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
      */
     @SuppressWarnings("null")
     private static List<ItemStack> getSalvageResults(final Level level, final ItemStack input)
+    {
+        final List<ItemStack> outputs = new ArrayList<>();
+        final ItemStack singleInput = input.copy();
+        singleInput.setCount(1);
+
+        for (int i = 0; i < input.getCount(); i++)
+        {
+            outputs.addAll(getSingleItemSalvageResults(level, singleInput));
+        }
+
+        return outputs;
+    }
+
+    /**
+     * Resolves the same recipe outputs that one Apotheosis Salvaging Table input slot would produce.
+     *
+     * @param level the level containing the runtime recipe manager and random source
+     * @param input the single item stack being salvaged
+     * @return copied salvage result stacks, or an empty list when no Apotheosis salvaging recipe matches
+     */
+    @SuppressWarnings("null")
+    private static List<ItemStack> getSingleItemSalvageResults(final Level level, final ItemStack input)
     {
         final List<ItemStack> outputs = new ArrayList<>();
         for (final RecipeHolder<SalvagingRecipe> recipe : level.getRecipeManager().getRecipesFor(Apoth.RecipeTypes.SALVAGING, new SingleRecipeInput(input), level))
