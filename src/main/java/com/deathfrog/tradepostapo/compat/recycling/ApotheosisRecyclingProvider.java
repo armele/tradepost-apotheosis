@@ -86,7 +86,6 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
      * @param input the item stack being salvaged
      * @return copied salvage result stacks, or an empty list when no Apotheosis salvaging recipe matches
      */
-    @SuppressWarnings("null")
     private static List<ItemStack> getSalvageResults(final Level level, final ItemStack input)
     {
         final List<ItemStack> outputs = new ArrayList<>();
