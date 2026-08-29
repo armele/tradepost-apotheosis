@@ -27,15 +27,28 @@ sourceSets.main.resources {
 
 repositories {
     mavenLocal()
-    flatDir {
-        dirs '../Minecolonies/build/libs'
-        dirs '../mctradepost-retro/build/libs'
-        dirs '../Apotheosis/build/libs'
-    }
     maven {
         name 'LDTTeam - Modding'
         url 'https://ldtteam.jfrog.io/ldtteam/modding/'
     } 
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = 'CurseMaven'
+                url = uri('https://www.cursemaven.com')
+            }
+        }
+        filter {
+            includeGroup 'curse.maven'
+        }
+    }
+    maven {
+        name = "Shadows Maven"
+        url = uri("https://maven.shadowsoffire.dev/releases")
+        content {
+            includeGroup("dev.shadowsoffire")
+        }
+    }
     maven {
         // location of the maven that hosts JEI files since January 2023
         name = "Jared's maven"
@@ -117,26 +130,27 @@ dependencies {
     // For all intends and purposes: You can treat this dependency as if it is a normal library you would use.
     implementation "net.neoforged:neoforge:${neo_version}"
 
-    compileOnly name: 'minecolonies-1.1.1343-1.21.1-snapshot'
-    localRuntime files ('../Minecolonies/build/libs/minecolonies-1.1.1343-1.21.1-snapshot.jar')
+    implementation("com.ldtteam:minecolonies:${minecolonies_version}") {
+        transitive = false
+    }
+    implementation("com.ldtteam:structurize:${structurize_version}") {
+        transitive = false
+    }
+    implementation("com.ldtteam:blockui:${blockui_version}") {
+        transitive = false
+    }
+    implementation("com.ldtteam:domum-ornamentum:${domum_ornamentum_version}") {
+        transitive = false
+    }
+    implementation("com.ldtteam:multipiston:${multipiston_version}") {
+        transitive = false
+    }
+
+    implementation("curse.maven:mc-trade-post-1288791:${tradepost_curse_file}") {
+        transitive = false
+    }
     
-    compileOnly name: 'multipiston-1.2.58-1.21.1'
-    localRuntime files ('../Minecolonies/build/libs/multipiston-1.2.58-1.21.1.jar')
-
-    compileOnly name: 'blockui-1.0.211-1.21.1-snapshot'  // use the actual filename without .jar
-    localRuntime files('../Minecolonies/build/libs/blockui-1.0.211-1.21.1-snapshot.jar')    
-
-    compileOnly name: 'structurize-1.0.830-1.21.1'  // use the actual filename without .jar
-    localRuntime files('../Minecolonies/build/libs/structurize-1.0.830-1.21.1.jar')       
-
-    compileOnly name: 'domum-ornamentum-1.0.234-snapshot-main'  // use the actual filename without .jar
-    localRuntime files('../Minecolonies/build/libs/domum-ornamentum-1.0.234-snapshot-main.jar')   
-
-    compileOnly name: 'mctradepost-1.05.026-1.21.1'  // use the actual filename without .jar
-    localRuntime files('../mctradepost-retro/build/libs/mctradepost-1.05.026-1.21.1.jar')    
-
-    compileOnly name: 'Apotheosis-1.21.1-8.5.4'  // use the actual filename without .jar
-    localRuntime files('../apotheosis/build/libs/Apotheosis-1.21.1-8.5.4.jar')    
+    implementation("dev.shadowsoffire:Apotheosis:1.21.1-8.7.0")
 
     // JEI for compile-time access
     compileOnly("mezz.jei:jei-1.21.1-neoforge-api:19.27.0.336")

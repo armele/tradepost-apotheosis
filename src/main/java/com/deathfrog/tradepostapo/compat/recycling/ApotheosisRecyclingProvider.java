@@ -251,11 +251,13 @@ public final class ApotheosisRecyclingProvider implements IOptionalRecyclingProv
     private static boolean isAdvancedSalvageOutput(final ItemStack output)
     {
         return is(output, Apoth.Items.GEM_DUST)
-            || is(output, Apoth.Items.COMMON_MATERIAL)
-            || is(output, Apoth.Items.UNCOMMON_MATERIAL)
-            || is(output, Apoth.Items.RARE_MATERIAL)
-            || is(output, Apoth.Items.EPIC_MATERIAL)
-            || is(output, Apoth.Items.MYTHIC_MATERIAL);
+            || is(output, Apoth.Items.MYSTERIOUS_SCRAP_METAL)
+            || is(output, Apoth.Items.TIMEWORN_FABRIC)
+            || is(output, Apoth.Items.LUMINOUS_CRYSTAL_SHARD)
+            || is(output, Apoth.Items.ARCANE_SANDS)
+            || is(output, Apoth.Items.GODFORGED_PEARL)
+            || is(output, Apoth.Items.GOD_FUSED_PEARL)
+            ;
     }
 
     /**
