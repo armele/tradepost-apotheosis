@@ -50,6 +50,13 @@ repositories {
         }
     }
     maven {
+        name = "Curios"
+        url = uri("https://maven.theillusivec4.top")
+        content {
+            includeGroupByRegex("top\\.theillusivec4.*")
+        }
+    }
+    maven {
         // location of the maven that hosts JEI files since January 2023
         name = "Jared's maven"
         url = "https://maven.blamejared.com/"
@@ -150,7 +157,7 @@ dependencies {
         transitive = false
     }
     
-    implementation("dev.shadowsoffire:Apotheosis:1.21.1-8.7.0")
+    implementation("dev.shadowsoffire:Apotheosis:${minecraft_version}-${apotheosis_version}")
 
     // JEI for compile-time access
     compileOnly("mezz.jei:jei-1.21.1-neoforge-api:19.27.0.336")
@@ -171,6 +178,7 @@ tasks.withType(ProcessResources).configureEach {
             minecraft_version_range: minecraft_version_range,
             neo_version            : neo_version,
             loader_version_range   : loader_version_range,
+            apotheosis_version     : apotheosis_version,
             mod_id                 : mod_id,
             mod_name               : mod_name,
             mod_license            : mod_license,
