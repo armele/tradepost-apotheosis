@@ -17,10 +17,10 @@ Allows the Trade Post for MineColonies recycler building to handle Apotheosis sa
     side="BOTH"
 
 [[dependencies.${mod_id}]]
-    modId="minecraft"
+    modId="minecolonies"
     type="required"
-    versionRange="${minecraft_version_range}"
-    ordering="NONE"
+    versionRange="${minecolonies_version_range}"
+    ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${mod_id}]]
